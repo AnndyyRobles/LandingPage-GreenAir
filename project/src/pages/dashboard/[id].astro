@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Dashboard from '../../components/Dashboard';
+
+// Obtener el ID de la estación de los parámetros de la URL
+const { id } = Astro.params;
+
+// Validar que el ID existe
+if (!id) {
+  return Astro.redirect('/');
+}
+---
+
+<Layout title="GreenAir - Station Dashboard">
+  <Dashboard client:load stationId={id} />
+</Layout>

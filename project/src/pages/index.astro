@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ParticleCanvas from '../components/ParticleCanvas';
+import StationSearch from '../components/StationSearch';
+import LoginButton from '../components/LoginButton';
+---
+
+<Layout title="GreenAir - Air Quality Monitoring">
+  <LoginButton client:load />
+  <ParticleCanvas client:load />
+  
+  <main class="relative z-10 flex flex-col items-center justify-center min-h-screen p-8">
+    <div class="mb-12 text-center">
+      <h1 class="text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+        GreenAir
+      </h1>
+      <p class="text-lg text-white/90 mt-8 max-w-xl mx-auto">
+        Get real-time air quality data and personalized alerts based on your location
+      </p>
+    </div>
+
+    <div class="text-center">
+      <button
+        id="exploreButton"
+        class="bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full px-8 py-4 text-xl hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <span>Explorar Estaciones</span>
+      </button>
+    </div>
+  </main>
+
+  <StationSearch client:load isOpen={false} onClose={() => {}} />
+</Layout>
+
+<script>
+  let searchComponent;
+
+  // Wait for custom elements to be defined
+  window.addEventListener('load', () => {
+    const exploreButton = document.getElementById('exploreButton');
+    searchComponent = document.querySelector('station-search');
+
+    if (exploreButton) {
+      exploreButton.addEventListener('click', () => {
+        const event = new CustomEvent('toggleSearch', { 
+          detail: { isOpen: true }
+        });
+        document.dispatchEvent(event);
+      });
+    }
+  });
+</script>
+
+<style>
+  :global(.custom-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  :global(.custom-scrollbar::-webkit-scrollbar) {
+    width: 6px;
+  }
+
+  :global(.custom-scrollbar::-webkit-scrollbar-track) {
+    background: transparent;
+  }
+
+  :global(.custom-scrollbar::-webkit-scrollbar-thumb) {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+  }
+</style>
